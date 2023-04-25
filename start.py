@@ -294,10 +294,10 @@ def startTest(ip_list: Pattern[AnyStr], config: configparser.ConfigParser):
         txt_file.write("")
 
     # Print out table header if it was the first record
-    # stdscr.addstr(3, 0, "|---|---------------|----------|---------|---------|----------|------------|")
-    # stdscr.addstr(4, 0, "| # |       IP      | Ping(ms) | Jit(ms) | Lat(ms) | Up(Mbps) | Down(Mbps) |")
-    # stdscr.addstr(5, 0, "|---|---------------|----------|---------|---------|----------|------------|")
-    # stdscr.addstr(6, 0, "|---|---------------|----------|---------|---------|----------|------------|")
+    print("|---|---------------|----------|---------|---------|----------|------------|")
+    print("| # |       IP      | Ping(ms) | Jit(ms) | Lat(ms) | Up(Mbps) | Down(Mbps) |")
+    print("|---|---------------|----------|---------|---------|----------|------------|")
+    print("|---|---------------|----------|---------|---------|----------|------------|")
 
     # Loop through IP adresses to check their ping, latency and download/upload speed
     for ip in ip_list:
@@ -307,7 +307,7 @@ def startTest(ip_list: Pattern[AnyStr], config: configparser.ConfigParser):
 
         # stdscr.move(0, 0)
         # stdscr.clrtoeol()    # Clear the entire line
-        # stdscr.addstr(0, 0, f"Test #{test_no}: {ip}")
+        print(f"Test #{test_no}: {ip}")
         # stdscr.refresh()
 
         try:
@@ -318,7 +318,7 @@ def startTest(ip_list: Pattern[AnyStr], config: configparser.ConfigParser):
                 continue
 
             str = f"Ping: {ping}ms"
-            # stdscr.addstr(1, 0, str)
+            print(str)
             # stdscr.refresh()
             col = col + len(str)
 
@@ -394,7 +394,7 @@ def startTest(ip_list: Pattern[AnyStr], config: configparser.ConfigParser):
     # stdscr.clrtoeol()    # Clear the entire line
     # stdscr.move(1, 0)
     # stdscr.clrtoeol()    # Clear the entire line
-    # stdscr.addstr(0, 0, "Done.")
+    print("Done.")
     # stdscr.refresh()
     time.sleep(3)
 
