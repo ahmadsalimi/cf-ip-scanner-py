@@ -14,7 +14,7 @@ from functools import partial
 from multiprocessing import Pool
 import itertools
 from typing import Pattern, AnyStr, List
-import curses
+# import curses
 import ssl
 
 print_ping_error_message = False   # initialize flag variable
@@ -223,7 +223,8 @@ def main():
         openssl_is_active = False
 
     # Start testing clean IPs
-    selectd_ip_list, total_test = curses.wrapper(startTest, ip_list=ip_list, config=config)
+    # selectd_ip_list, total_test = curses.wrapper(startTest, ip_list=ip_list, config=config)
+    selectd_ip_list, total_test = startTest(ip_list, config)
 
     print(f"\n{total_test} of {len(ip_list)} matched IPs have peen tested.")
     print(f"{len(selectd_ip_list)} IP(s) found:")
@@ -267,10 +268,10 @@ def main():
     print("Done.\n")
 
 
-def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configparser.ConfigParser):
+def startTest(ip_list: Pattern[AnyStr], config: configparser.ConfigParser):
     # Clear the screen
-    stdscr.clear()
-    stdscr.refresh()
+    # stdscr.clear()
+    # stdscr.refresh()
 
     # Initiate variables
     selectd_ip_list = []
@@ -293,10 +294,10 @@ def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configpar
         txt_file.write("")
 
     # Print out table header if it was the first record
-    stdscr.addstr(3, 0, "|---|---------------|----------|---------|---------|----------|------------|")
-    stdscr.addstr(4, 0, "| # |       IP      | Ping(ms) | Jit(ms) | Lat(ms) | Up(Mbps) | Down(Mbps) |")
-    stdscr.addstr(5, 0, "|---|---------------|----------|---------|---------|----------|------------|")
-    stdscr.addstr(6, 0, "|---|---------------|----------|---------|---------|----------|------------|")
+    # stdscr.addstr(3, 0, "|---|---------------|----------|---------|---------|----------|------------|")
+    # stdscr.addstr(4, 0, "| # |       IP      | Ping(ms) | Jit(ms) | Lat(ms) | Up(Mbps) | Down(Mbps) |")
+    # stdscr.addstr(5, 0, "|---|---------------|----------|---------|---------|----------|------------|")
+    # stdscr.addstr(6, 0, "|---|---------------|----------|---------|---------|----------|------------|")
 
     # Loop through IP adresses to check their ping, latency and download/upload speed
     for ip in ip_list:
@@ -304,10 +305,10 @@ def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configpar
         # Increase the test number
         test_no = test_no + 1
 
-        stdscr.move(0, 0)
-        stdscr.clrtoeol()    # Clear the entire line
-        stdscr.addstr(0, 0, f"Test #{test_no}: {ip}")
-        stdscr.refresh()
+        # stdscr.move(0, 0)
+        # stdscr.clrtoeol()    # Clear the entire line
+        # stdscr.addstr(0, 0, f"Test #{test_no}: {ip}")
+        # stdscr.refresh()
 
         try:
             # Calculate ping of selected ip using related function
@@ -317,8 +318,8 @@ def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configpar
                 continue
 
             str = f"Ping: {ping}ms"
-            stdscr.addstr(1, 0, str)
-            stdscr.refresh()
+            # stdscr.addstr(1, 0, str)
+            # stdscr.refresh()
             col = col + len(str)
 
             # Calculate latency of selected ip using related function
@@ -329,34 +330,34 @@ def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configpar
                 continue
             # Ignore the IP if latency dosn't match the maximum required latency
             if latency > max_latency:
-                stdscr.move(1, 0)
-                stdscr.clrtoeol()    # Clear the entire line
+                # stdscr.move(1, 0)
+                # stdscr.clrtoeol()    # Clear the entire line
                 continue
 
             str = f", Jitter: {jitter}ms, Latency: {latency}ms"
-            stdscr.addstr(1, col, str)
-            stdscr.refresh()
+            # stdscr.addstr(1, col, str)
+            # stdscr.refresh()
             col = col + len(str)
 
             # Calculate upload speed of selected ip using related function
             upload_speed = getUploadSpeed(ip, test_size, min_upload_speed)
             # Ignore the IP if upload speed dosn't match the minimum required speed
             if upload_speed < min_upload_speed:
-                stdscr.move(1, 0)
-                stdscr.clrtoeol()    # Clear the entire line
+                # stdscr.move(1, 0)
+                # stdscr.clrtoeol()    # Clear the entire line
                 continue
 
             str = f", Upload: {upload_speed}Mbps"
-            stdscr.addstr(1, col, str)
-            stdscr.refresh()
+            # stdscr.addstr(1, col, str)
+            # stdscr.refresh()
 
             # Calculate download speed of selected ip using related function
             download_speed = getDownloadSpeed(ip, test_size, min_download_speed)
             # Ignore the IP if download speed dosn't match the minimum required speed
 
-            stdscr.move(1, 0)
-            stdscr.clrtoeol()    # Clear the entire line
-            stdscr.refresh()
+            # stdscr.move(1, 0)
+            # stdscr.clrtoeol()    # Clear the entire line
+            # stdscr.refresh()
 
             if download_speed < min_download_speed:
                 continue
@@ -365,12 +366,12 @@ def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configpar
             successful_no = successful_no + 1
 
             # Move cursor to the right position
-            stdscr.move(6, 0)
+            # stdscr.move(6, 0)
             # Insert a new line at the cursor position, shifting the existing lines down
-            stdscr.insertln()
+            # stdscr.insertln()
             # Print out the IP and related info as well as ping, latency and download/upload speed
-            stdscr.addstr(f"|{successful_no:3d}|{ip:15s}|{ping:7d} |{jitter:6d} |{latency:6d} |{upload_speed:7.2f} |{download_speed:9.2f} |")
-            stdscr.refresh()
+            # stdscr.addstr(f"|{successful_no:3d}|{ip:15s}|{ping:7d} |{jitter:6d} |{latency:6d} |{upload_speed:7.2f} |{download_speed:9.2f} |")
+            # stdscr.refresh()
 
             selectd_ip_list.append(IPInfo(ip, ping, jitter, latency, upload_speed, download_speed))
 
@@ -389,12 +390,12 @@ def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configpar
         if len(selectd_ip_list) >= max_ip:
             break
 
-    stdscr.move(0, 0)
-    stdscr.clrtoeol()    # Clear the entire line
-    stdscr.move(1, 0)
-    stdscr.clrtoeol()    # Clear the entire line
-    stdscr.addstr(0, 0, "Done.")
-    stdscr.refresh()
+    # stdscr.move(0, 0)
+    # stdscr.clrtoeol()    # Clear the entire line
+    # stdscr.move(1, 0)
+    # stdscr.clrtoeol()    # Clear the entire line
+    # stdscr.addstr(0, 0, "Done.")
+    # stdscr.refresh()
     time.sleep(3)
 
     return selectd_ip_list, test_no
